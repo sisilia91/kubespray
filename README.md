@@ -1,3 +1,59 @@
+# By Taegeon_woo
+ansible master : 172.22.6.2/root/ansible/kubespray
+
+1. python3 가상환경 설치 
+
+wget https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py
+pip install virtualenv
+virtualenv .python
+source .python/bin/activate
+
+2. kubespray setting
+
+git clone https://github.com/tmax-cloud/kubespray.git
+cd kubespray
+pip install -r requirements.txt
+
+3. ssh-key 등록
+ssh-keygen
+
+Crio 설정
+https://github.com/kubernetes-sigs/kubespray/blob/master/docs/cri-o.md 참조했음
+
+ssh-copy-id root@192.168.9.246
+ssh-copy-id root@192.168.9.39
+
+playbook 실행
+ansible-playbook -i inventory/mycluster/inventory.ini cluster.yml
+ansible-playbook -i inventory/mycluster/inventory.ini cluster-test.yml
+
+--------------------------------------------------------------------
+k8s master 1 node : 192.168.9.246
+k8s worker 1 node : 192.168.6.39
+
+yum -y install python3-pip wget git vim epel-release
+
+sudo swapoff -a
+sudo sed -i '/swap/d' /etc/fstab
+systemctl stop firewalld
+systemctl disable firewalld
+
+sudo dnf provides tc
+sudo dnf install iproute-tc
+sudo yum install nfs-utils
+
+
+
+------------------snapshot ( before playbook after expand)
+
+ssh-copy-id root@192.168.9.246
+ssh-copy-id root@192.168.9.39
+
+playbook 실행
+ansible-playbook -i inventory/mycluster/inventory.ini cluster.yml
+
+
 # Deploy a Production Ready Kubernetes Cluster
 
 ![Kubernetes Logo](https://raw.githubusercontent.com/kubernetes-sigs/kubespray/master/docs/img/kubernetes-logo.png)
