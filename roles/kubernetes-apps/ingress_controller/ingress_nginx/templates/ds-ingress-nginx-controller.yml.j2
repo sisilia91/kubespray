@@ -94,15 +94,6 @@ spec:
 {% if not ingress_nginx_host_network %}
               hostPort: {{ ingress_nginx_metrics_port }}
 {% endif %}
-           # - name: kafka-1
-           #   containerPort: 9001
-           #   hostPort: 9001
-           # - name: kafka-2
-           #   containerPort: 9002
-           #   hostPort: 9002
-           # - name: kafka-3
-           #   containerPort: 9003
-           #   hostPort: 9003 		
           livenessProbe:
             failureThreshold: 3
             httpGet:
