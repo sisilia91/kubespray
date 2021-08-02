@@ -9,7 +9,9 @@
   apt_key:
     url: "https://{{ crio_download_base }}/{{ crio_kubic_debian_repo_name }}/Release.key"
     state: present
-  when: crio_kubic_debian_repo_name is defined
+  when:
+    - crio_kubic_debian_repo_name is defined
+    - not is_this_offline
   register: apt_key_download
   until: apt_key_download is succeeded
   retries: 4
@@ -21,14 +23,18 @@
     repo: "deb http://{{ crio_download_base }}/{{ crio_kubic_debian_repo_name }}/ /"
     state: present
     filename: devel-kubic-libcontainers-stable
-  when: crio_kubic_debian_repo_name is defined
+  when: 
+    - crio_kubic_debian_repo_name is defined
+    - not is_this_offline
 
 - name: Add CRI-O kubic cri-o apt repo
   apt_repository:
     repo: "deb {{ crio_download_crio }}{{ crio_version }}/{{ crio_kubic_debian_repo_name }}/ /"
     state: present
     filename: devel-kubic-libcontainers-stable-cri-o
-  when: crio_kubic_debian_repo_name is defined
+  when:
+    - crio_kubic_debian_repo_name is defined
+    - not is_this_offline
 
 - name: Check that amzn2-extras.repo exists
   stat:
@@ -83,6 +89,7 @@
   when:
     - ansible_os_family == "RedHat"
     - ansible_distribution not in ["Amazon", "Fedora"]
+    - not is_this_offline
 
 - name: Add CRI-O kubic yum repo
   yum_repository:
@@ -94,6 +101,7 @@
   when:
     - ansible_os_family == "RedHat"
     - ansible_distribution not in ["Amazon", "Fedora"]
+    - not is_this_offline
 
 - name: Add CRI-O kubic yum repo
   yum_repository:
@@ -103,7 +111,9 @@
     gpgcheck: yes
     gpgkey: http://{{ crio_download_base }}/CentOS_7/repodata/repomd.xml.key
     keepcache: '0'
-  when: ansible_distribution in ["Amazon"]
+  when:
+    - ansible_distribution in ["Amazon"]
+    - not is_this_offline
 
 - name: Add CRI-O kubic yum repo
   yum_repository:
@@ -111,8 +121,10 @@
     description: "CRI-O {{ crio_version }}"
     baseurl: "{{ crio_download_crio }}{{ crio_version }}/CentOS_7/"
     gpgcheck: yes
-    gpgkey: "{{ crio_download_crio }}{{ crio_version }}/CentOS_7/repodata/repomd.xml.key"
-  when: ansible_distribution in ["Amazon"]
+    gpgkey: "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio_version }}/CentOS_7/repodata/repomd.xml.key"
+  when:
+    - ansible_distribution in ["Amazon"]
+    - not is_this_offline
 
 - name: Enable modular repos for CRI-O
   ini_file:
