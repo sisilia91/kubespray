@@ -1,5 +1,6 @@
 ---
 ## Global Offline settings
+is_this_offline: false
 ### Private Container Image Registry
 # registry_host: "myprivateregisry.com"
 # files_repo: "http://myprivatehttpd"
