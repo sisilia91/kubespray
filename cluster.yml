@@ -135,6 +135,7 @@
     - { role: kubernetes-apps, tags: apps }
     - { role: kubernetes-apps/nfs_external_provisioner }
     #- { role: kubernetes-apps/hyperauth }
+    #- { role: kubernetes-apps/hypercloud }
 
 - hosts: k8s_cluster
   gather_facts: False

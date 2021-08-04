@@ -4,4 +4,4 @@
   gather_facts: False
   roles:
     - { role: kubernetes-apps/hyperauth }
-
+    - { role: kubernetes-apps/hypercloud }

@@ -1,0 +1,22 @@
+---
+HPCD_MODE: "single"
+HPCD_SINGLE_OPERATOR_VERSION: "5.0.20.1"
+HPCD_MULTI_OPERATOR_VERSION: "5.0.20.0"
+HPCD_API_SERVER_VERSION: "5.0.20.0"
+HPCD_POSTGRES_VERSION: "5.0.0.1"
+HPCD_CAPI_TEMPLATE_VERSION: "5.0.0.0"
+REGISTRY: "{REGISTRY}"
+
+INVITATION_TOKEN_EXPIRED_DATE: "7days"
+
+HYPERAUTH_URL: "https://hyperauth.org/auth/realms/tmax"
+
+KAFKA_GROUP_ID: "hypercloud-api-server-master-fix"
+KAFKA1_ADDR: "DNS"
+KAFKA2_ADDR: "DNS"
+KAFKA3_ADDR: "DNS"
+
+INGRESS_DNSURL: "hypercloud5-api-server-service.hypercloud5-system.svc/audit"
+#INGRESS_IPADDR: $(kubectl get svc ingress-nginx-shared-controller -n ingress-nginx-shared -o jsonpath='{.status.loadBalancer.ingress[0:].ip}')
+#INGRESS_SVCURL: "hypercloud5-api-server-service."${INGRESS_IPADDR}".nip.io"
+INGRESS_SVCURL: "hypercloud5-api-server-service.192.168.9.39.nip.io"
