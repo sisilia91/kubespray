@@ -136,7 +136,7 @@ ingress_alb_enabled: false
 # alb_ingress_aws_debug: "false"
 
 # Cert manager deployment
-cert_manager_enabled: false
+cert_manager_enabled: true
 # cert_manager_namespace: "cert-manager"
 
 # MetalLB deployment
@@ -216,3 +216,5 @@ KAFKA2_ADDR: "DNS"
 KAFKA3_ADDR: "DNS"
 INGRESS_DNSURL: "hypercloud5-api-server-service.hypercloud5-system.svc/audit"
 INGRESS_SVCURL: "hypercloud5-api-server-service.192.168.9.39.nip.io"
+
+# Cluster API

@@ -44,43 +44,6 @@
     - inventory_hostname == groups['kube_control_plane'][0]      
 
 
-- name: Hypercloud | Check Cert-Manager exists
-  stat:
-    path: "{{ kube_config_dir }}/addons/hypercloud/cert-manager.yaml"
-  register: cert_manager
-
-
-- name: Hypercloud | Get Cert-Manager
-  ansible.builtin.get_url:
-    url: "https://github.com/jetstack/cert-manager/releases/download/v1.2.0/cert-manager.yaml"
-    dest: "{{ kube_config_dir }}/addons/hypercloud/cert-manager.yaml"
-    mode: '0664'
-  when:
-    - inventory_hostname == groups['kube_control_plane'][0]
-    - not cert_manager.stat.exists
-
-
-- name: Hypercloud | Install Cert-Manager
-  kube:
-    kubectl: "{{ bin_dir }}/kubectl"
-    filename: "{{ kube_config_dir }}/addons/hypercloud/cert-manager.yaml"
-    state: "latest"
-    wait: true
-  when:
-    - inventory_hostname == groups['kube_control_plane'][0]   
-    - not cert_manager.stat.exists
-
-
-- name: Hypercloud | Wait for Cert-Manager Pod become available
-  ansible.builtin.shell: |
-    kubectl get pods -n cert-manager -o json
-  register: cert_manager_status
-  until: cert_manager_status.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
-  retries: 400
-  when:
-    - inventory_hostname == groups['kube_control_plane'][0]
-
-
 - name: Hypercloud | Generate Manifests
   template:
     src: "{{ item.file }}.j2"
@@ -263,16 +226,6 @@
     - "04_default-role.yaml"
   when:
     - inventory_hostname == groups['kube_control_plane'][0]
-
-
-#- name: Hypercloud | Wait for Hypercloud Api Server Pod become available
-  #ansible.builtin.shell: |
-    #kubectl get pods -n hypercloud5-system -o json
-  #register: hypercloud5_api_server_status
-  #until: hypercloud5_api_server_status.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
-  #retries: 400
-  #when:
-    #- inventory_hostname == groups['kube_control_plane'][0]
 
 
 - name: Hypercloud | Wait for Hypercloud Api Server Pod become available
