@@ -197,10 +197,12 @@ nfs_server: 172.22.6.2
 nfs_path: /root/nfs
 
 # Hyperauth
+hyperauth_enabled: true
 hyperauth_version: latest
 nginx_ingress_controller_external_ip: "192.168.9.39"
 
 # Hypercloud
+hypercloud_enabled: true
 HPCD_MODE: "single"
 HPCD_SINGLE_OPERATOR_VERSION: "5.0.20.1"
 HPCD_MULTI_OPERATOR_VERSION: "5.0.20.0"
@@ -218,3 +220,6 @@ INGRESS_DNSURL: "hypercloud5-api-server-service.hypercloud5-system.svc/audit"
 INGRESS_SVCURL: "hypercloud5-api-server-service.192.168.9.39.nip.io"
 
 # Cluster API
+cluster_api_enabled: true
+CAPI_PROVIDER_AWS: "true"
+AWS_B64ENCODED_CREDENTIALS: "W2RlZmF1bHRdCmF3c19hY2Nlc3Nfa2V5X2lkID0gQUtJQVFERjRSS1gyNTJQMkJGR0IKYXdzX3NlY3JldF9hY2Nlc3Nfa2V5ID0gdUJYUVFMQzd1Z1ZTekNEYW9oRnpKN3R5OEJLd0xLbFNNWGFoVTVILwpyZWdpb24gPSBldS13ZXN0LTEKCg=="
