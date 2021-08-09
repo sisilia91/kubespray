@@ -230,3 +230,4 @@ VSPHERE_USERNAME: "tmax@vsphere.local"
 VSPHERE_PASSWORD: "Tmax@2323"
 
 # Federation
+FED_NS: "kube-federation-system"

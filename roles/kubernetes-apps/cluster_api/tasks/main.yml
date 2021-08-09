@@ -1,5 +1,5 @@
 ---
-# tasks file for hypercloud
+# tasks file for Cluser API
 - name: Cluster API | Create addon dir
   file:
     path: "{{ kube_config_dir }}/addons/cluster_api"
@@ -16,7 +16,6 @@
     dest: "{{ kube_config_dir }}/addons/cluster_api/{{ item.file }}"
   with_items:
     - { name: "cluster-api-componenets", file: "cluster-api-components.yaml"}
-  register: cluster_api_manifests
   when: 
     - inventory_hostname == groups['kube_control_plane'][0]
 
@@ -38,7 +37,6 @@
     owner: "root"
     group: "root"
     mode: '0777'
-  register: hypercloud_manifests_CAPI_template
   with_items:
     - { name: "clusterawsadm", file: "clusterawsadm" }
   when: 
@@ -62,7 +60,6 @@
     owner: "root"
     group: "root"
     mode: '0644'
-  register: hypercloud_manifests_CAPI_template
   with_items:
     - { name: "infrastructure-components-aws", file: "infrastructure-components-aws" }
   when: 
@@ -97,7 +94,6 @@
     dest: "{{ kube_config_dir }}/addons/cluster_api/{{ item.file }}"
   with_items:
     - { name: "infrastructure-components-vsphere", file: "infrastructure-components-vsphere.yaml"}
-  register: cluster_api_manifests
   when: 
     - inventory_hostname == groups['kube_control_plane'][0]
     - CAPI_PROVIDER_VSPHERE == "true"
