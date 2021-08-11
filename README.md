@@ -53,6 +53,7 @@ ssh-copy-id root@192.168.9.39
 playbook 실행  
 ansible-playbook -i inventory/mycluster/inventory.ini cluster.yml  
 
+hostvar 조회:  ansible all -i inventory/mycluster/inventory.ini -m debug -a "var=hostvars"
 
 # Deploy a Production Ready Kubernetes Cluster
 
