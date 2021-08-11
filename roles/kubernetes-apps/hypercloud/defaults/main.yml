@@ -1,5 +1,6 @@
 ---
 # default value
+hypercloud_enabled: false
 hypercloud_hpcd_mode: "multi"
 hypercloud_hpcd_single_operator_version: "5.0.20.1"
 hypercloud_hpcd_multi_operator_version: "5.0.20.0"

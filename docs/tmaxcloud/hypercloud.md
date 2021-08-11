@@ -17,6 +17,7 @@ hypercloud_kafka3_addr: kafka pod의 주소
 
 ### 예시
 ```yml
+hypercloud_enabled: true 
 hypercloud_hpcd_mode: "multi"
 hypercloud_hpcd_single_operator_version: "5.0.20.1"
 hypercloud_hpcd_multi_operator_version: "5.0.20.0"
