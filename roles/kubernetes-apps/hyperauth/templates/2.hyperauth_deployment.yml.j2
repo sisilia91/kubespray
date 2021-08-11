@@ -30,7 +30,11 @@ spec:
           claimName: hyperauth-log-pvc          
       containers:
       - name: hyperauth
+{% if not is_this_offline %}
         image: tmaxcloudck/hyperauth:{{ hyperauth_version }}
+{% else %}
+        image: {{ registry_host }}/tmaxcloudck/hyperauth:{{ hyperauth_version }}
+{% endif %}
         args: ["-c standalone-ha.xml", "-Dkeycloak.profile.feature.docker=enabled -b 0.0.0.0"]                
         env:
         - name: KEYCLOAK_USER

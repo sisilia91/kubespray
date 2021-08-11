@@ -2926,8 +2926,8 @@ metadata:
   namespace: capv-system
 stringData:
   credentials.yaml: |-
-    username: '{{ VSPHERE_USERNAME }}'
-    password: '{{ VSPHERE_PASSWORD }}'
+    username: '{{ cluster_api_vsphere_username }}'
+    password: '{{ cluster_api_vsphere_password }}'
 type: Opaque
 ---
 apiVersion: v1
@@ -2991,7 +2991,11 @@ spec:
         - --upstream=http://127.0.0.1:8080/
         - --logtostderr=true
         - --v=10
+{% if not is_this_offline %}
         image: gcr.io/kubebuilder/kube-rbac-proxy:v0.8.0
+{% else %}
+        image: {{ registry_host }}/kubebuilder/kube-rbac-proxy:v0.8.0
+{% endif %}
         name: kube-rbac-proxy
         ports:
         - containerPort: 8443
@@ -3000,7 +3004,11 @@ spec:
         - --metrics-addr=127.0.0.1:8080
         - --webhook-port=9443
         - --enable-leader-election=false
+{% if not is_this_offline %}
         image: gcr.io/cluster-api-provider-vsphere/release/manager:v0.7.6
+{% else %}
+        image: {{ registry_host }}/cluster-api-provider-vsphere/release/manager:v0.7.6
+{% endif %}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -3058,14 +3066,22 @@ spec:
         - --upstream=http://127.0.0.1:8080/
         - --logtostderr=true
         - --v=10
+{% if not is_this_offline %}
         image: gcr.io/kubebuilder/kube-rbac-proxy:v0.8.0
+{% else %}
+        image: {{ registry_host }}/kubebuilder/kube-rbac-proxy:v0.8.0
+{% endif %}
         name: kube-rbac-proxy
         ports:
         - containerPort: 8443
           name: https
       - args:
         - --metrics-addr=127.0.0.1:8080
+{% if not is_this_offline %}
         image: gcr.io/cluster-api-provider-vsphere/release/manager:v0.7.6
+{% else %}
+        image: {{ registry_host }}/cluster-api-provider-vsphere/release/manager:v0.7.6
+{% endif %}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:

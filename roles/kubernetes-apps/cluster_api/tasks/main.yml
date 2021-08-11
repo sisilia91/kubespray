@@ -1,5 +1,6 @@
 ---
 # tasks file for Cluser API
+
 - name: Cluster API | Create addon dir
   file:
     path: "{{ kube_config_dir }}/addons/cluster_api"
@@ -9,6 +10,45 @@
     mode: 0755
   when:
     - inventory_hostname == groups['kube_control_plane'][0]
+
+
+- name: Hypercloud | Check Cert-Manager exists
+  stat:
+    path: "{{ kube_config_dir }}/addons/cluster_api/cert-manager.yaml"
+  register: cert_manager
+
+
+- name: Hypercloud | Get Cert-Manager
+  ansible.builtin.get_url:
+    url: "https://github.com/jetstack/cert-manager/releases/download/v1.2.0/cert-manager.yaml"
+    dest: "{{ kube_config_dir }}/addons/cluster_api/cert-manager.yaml"
+    mode: '0664'
+  when:
+    - inventory_hostname == groups['kube_control_plane'][0]
+    - not cert_manager.stat.exists
+
+
+- name: Hypercloud | Install Cert-Manager
+  kube:
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/addons/cluster_api/cert-manager.yaml"
+    state: "latest"
+    wait: true
+  when:
+    - inventory_hostname == groups['kube_control_plane'][0]   
+    - not cert_manager.stat.exists
+
+
+- name: Hypercloud | Wait for Cert-Manager Pod become available
+  ansible.builtin.shell: |
+    kubectl get pods -n cert-manager -o json
+  register: cert_manager_status
+  until: cert_manager_status.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
+  retries: 400
+  when:
+    - inventory_hostname == groups['kube_control_plane'][0]
+
+
 
 - name: Cluster API | Generate Manifests
   template:
@@ -41,7 +81,7 @@
     - { name: "clusterawsadm", file: "clusterawsadm" }
   when: 
     - inventory_hostname == groups['kube_control_plane'][0]
-    - CAPI_PROVIDER_AWS == "true"
+    - cluster_api_provider_aws == "true"
 
 - name: Cluster API - Provider AWS | Generate AWS Credential File
   template:
@@ -51,7 +91,7 @@
     - { name: "aws-config", file: "aws-config"}
   when: 
     - inventory_hostname == groups['kube_control_plane'][0]
-    - CAPI_PROVIDER_AWS == "true"
+    - cluster_api_provider_aws == "true"
 
 - name: Cluster API - Provider AWS | Generate Manifests CAPI Provider AWS - Step1
   ansible.builtin.copy:
@@ -64,7 +104,7 @@
     - { name: "infrastructure-components-aws", file: "infrastructure-components-aws" }
   when: 
     - inventory_hostname == groups['kube_control_plane'][0]
-    - CAPI_PROVIDER_AWS == "true"
+    - cluster_api_provider_aws == "true"
 
 - name: Cluster API - Provider AWS | Generate Manifests CAPI Provider AWS - Step2
   ansible.builtin.shell: |
@@ -74,7 +114,7 @@
     chdir: "{{ kube_config_dir }}/addons/cluster_api"
   when:
     - inventory_hostname == groups['kube_control_plane'][0]
-    - CAPI_PROVIDER_AWS == "true"
+    - cluster_api_provider_aws == "true"
 
 - name: Cluster API - Provider AWS | Apply Cluster API Provider AWS
   kube:
@@ -86,7 +126,7 @@
     - "infrastructure-components-aws.yaml"
   when:
     - inventory_hostname == groups['kube_control_plane'][0]
-    - CAPI_PROVIDER_AWS == "true"
+    - cluster_api_provider_aws == "true"
 
 - name: Cluster API - Provider VSPHERE | Generate Manifests CAPI Provider VSPHERE
   template:
@@ -96,7 +136,7 @@
     - { name: "infrastructure-components-vsphere", file: "infrastructure-components-vsphere.yaml"}
   when: 
     - inventory_hostname == groups['kube_control_plane'][0]
-    - CAPI_PROVIDER_VSPHERE == "true"
+    - cluster_api_provider_vsphere == "true"
 
 - name: Cluster API - Provider VSPHERE | Apply Cluster API Provider VSPHERE
   kube:
@@ -108,4 +148,4 @@
     - "infrastructure-components-vsphere.yaml"
   when:
     - inventory_hostname == groups['kube_control_plane'][0]
-    - CAPI_PROVIDER_VSPHERE == "true"
+    - cluster_api_provider_vsphere == "true"

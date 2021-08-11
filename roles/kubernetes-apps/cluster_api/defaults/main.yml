@@ -1,10 +1,10 @@
 ---
-CAPI_PROVIDER_AWS: "false"
-CAPI_PROVIDER_VSPHERE: "false"
+cluster_api_provider_aws: "false"
+cluster_api_provider_vsphere: "false"
 
-AWS_ACCESS_KEY: "AAAAAAAAAAAAAAAAAAAA"
-AWS_SECRET_ACCESS_KEY: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-AWS_REGION: "region-detail-number"
+cluster_api_aws_access_key: "AAAAAAAAAAAAAAAAAAAA"
+cluster_api_aws_secret_key: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+cluster_api_aws_region: "region-detail-number"
 
-VSPHERE_USERNAME: "user@vsphere.local" 
-VSPHERE_PASSWORD: "0000"
+cluster_api_vsphere_username: "user@vsphere.local" 
+cluster_api_vsphere_password: "0000"

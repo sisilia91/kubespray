@@ -80,6 +80,9 @@
   when:
     - inventory_hostname == groups['kube_control_plane'][0] and cert_manager_webhook_pods_ready is succeeded
 
+      
+# 뭔가 기다리는 코드 필요할듯???
+
 - name: Cert Manager | Apply ClusterIssuer manifest
   kube:
     name: "clusterissuer-cert-manager"

@@ -184,7 +184,7 @@ data:
           versionLabel:
       readinessProbe:
         httpGet:
-          path: {{ HYPERAUTH_URL}} 
+          path: https://hyperauth.{{ nginx_ingress_controller_external_ip }}.nip.io/auth/realms/tmax
       
     - name: Calico
       namespace: kube-system

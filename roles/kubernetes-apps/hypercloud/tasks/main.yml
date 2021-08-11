@@ -53,8 +53,8 @@
     - { name: postgres-create, file: 02_postgres-create.yaml }
     - { name: hypercloud-api-server, file: 03_hypercloud-api-server.yaml }
     - { name: default-role, file: 04_default-role.yaml }
-    - { name: "hypercloud-single-operator-v{{ HPCD_SINGLE_OPERATOR_VERSION }}", file: "hypercloud-single-operator-v{{ HPCD_SINGLE_OPERATOR_VERSION }}.yaml" }
-    - { name: "hypercloud-multi-operator-v{{ HPCD_MULTI_OPERATOR_VERSION }}", file: "hypercloud-multi-operator-v{{ HPCD_MULTI_OPERATOR_VERSION }}.yaml" }
+    - { name: "hypercloud-single-operator-v{{ hypercloud_hpcd_single_operator_version }}", file: "hypercloud-single-operator-v{{ hypercloud_hpcd_single_operator_version }}.yaml" }
+    - { name: "hypercloud-multi-operator-v{{ hypercloud_hpcd_multi_operator_version }}", file: "hypercloud-multi-operator-v{{ hypercloud_hpcd_multi_operator_version }}.yaml" }
   register: hypercloud_manifests
   when: 
     - inventory_hostname == groups['kube_control_plane'][0]
@@ -69,10 +69,11 @@
     mode: '0644'
   register: hypercloud_manifests_CAPI_template
   with_items:
-    - { name: "service-catalog-template-CAPI-aws-v{{ HPCD_CAPI_TEMPLATE_VERSION }}", file: "service-catalog-template-CAPI-aws-v{{ HPCD_CAPI_TEMPLATE_VERSION }}" }
-    - { name: "service-catalog-template-CAPI-vsphere-v{{ HPCD_CAPI_TEMPLATE_VERSION }}", file: "service-catalog-template-CAPI-vsphere-v{{ HPCD_CAPI_TEMPLATE_VERSION }}" }
+    - { name: "service-catalog-template-CAPI-aws-v{{ hypercloud_hpcd_template_version }}", file: "service-catalog-template-CAPI-aws-v{{ hypercloud_hpcd_template_version }}" }
+    - { name: "service-catalog-template-CAPI-vsphere-v{{ hypercloud_hpcd_template_version }}", file: "service-catalog-template-CAPI-vsphere-v{{ hypercloud_hpcd_template_version }}" }
   when: 
     - inventory_hostname == groups['kube_control_plane'][0]
+    - hypercloud_hpcd_mode == "multi"
 
 
 - name: Hypercloud | Generate Config
@@ -133,7 +134,7 @@
     state: "latest"
     wait: true
   with_items:
-    - "hypercloud-single-operator-v{{ HPCD_SINGLE_OPERATOR_VERSION }}.yaml"
+    - "hypercloud-single-operator-v{{ hypercloud_hpcd_single_operator_version }}.yaml"
   when:
     - inventory_hostname == groups['kube_control_plane'][0]
 
@@ -161,7 +162,7 @@
     kubectl -n hypercloud5-system create secret generic hypercloud5-api-server-certs \
     --from-file=hypercloud-api-server.crt \
     --from-file=hypercloud-api-server.key 
-#    sudo sed -i 's/{KAFKA_GROUP_ID}/'hypercloud-api-server-$HOSTNAME-$(($RANDOM%100))'/g' {{ kube_config_dir }}/addons/hypercloud/03_hypercloud-api-server.yaml
+#    sudo sed -i 's/{hypercloud_kafka_group_id}/'hypercloud-api-server-$HOSTNAME-$(($RANDOM%100))'/g' {{ kube_config_dir }}/addons/hypercloud/03_hypercloud-api-server.yaml
   args:
     chdir: "{{ kube_config_dir }}/addons/hypercloud/pki"
   when:
@@ -304,6 +305,17 @@
     - not audit_config_exists.stat.exists
 
 
+- name: Hypercloud | Modify CAPI Vsphere Yaml
+  ansible.builtin.shell: |
+    sed -i 's#image: #image: {{ registry_host }}/#g: ' ./service-catalog-template-CAPI-vsphere*.yaml
+  args:
+    chdir: "{{ kube_config_dir }}/addons/hypercloud/"
+  when:
+    - inventory_hostname == groups['kube_control_plane'][0]
+    - hypercloud_hpcd_mode == "multi"
+    - is_this_offline == true
+
+
 - name: Hypercloud | Modify Multi Operator Config
   ansible.builtin.shell: |
     FILE=("hyperauth.crt" "audit-webhook-config" "audit-policy.yaml")
@@ -314,12 +326,12 @@
       sudo sed -e '/'${PARAM[$i]}'/r ./'${FILE[$i]}'' -e '/'${PARAM[$i]}'/d' -i ./service-catalog-template-CAPI-*.yaml
       rm -f ./${FILE[$i]}
     done
-    sed -i 's#'{{ INGRESS_DNSURL }}'#'{{ INGRESS_SVCURL }}'\/audit\/${Namespace}\/${clusterName}#g' ./service-catalog-template-CAPI-*.yaml
+    sed -i 's#'hypercloud5-api-server-service.hypercloud5-system.svc/audit'#'hypercloud5-api-server-service.{{ hostvars[groups['kube_node'][0]]['ansible_host'] }}.nip.io'\/audit\/${Namespace}\/${clusterName}#g' ./service-catalog-template-CAPI-*.yaml
   args:
     chdir: "{{ kube_config_dir }}/addons/hypercloud/"
   when:
     - inventory_hostname == groups['kube_control_plane'][0]
-    - HPCD_MODE == "multi"
+    - hypercloud_hpcd_mode == "multi"
 
 
 - name: Hypercloud | Apply Multi Operator
@@ -329,9 +341,9 @@
     state: "latest"
     wait: true
   with_items:
-    - "hypercloud-multi-operator-v{{ HPCD_MULTI_OPERATOR_VERSION }}.yaml"
-    - "service-catalog-template-CAPI-aws-v{{ HPCD_CAPI_TEMPLATE_VERSION }}.yaml"
-    - "service-catalog-template-CAPI-vsphere-v{{ HPCD_CAPI_TEMPLATE_VERSION }}.yaml"
+    - "hypercloud-multi-operator-v{{ hypercloud_hpcd_multi_operator_version }}.yaml"
+    - "service-catalog-template-CAPI-aws-v{{ hypercloud_hpcd_template_version }}.yaml"
+    - "service-catalog-template-CAPI-vsphere-v{{ hypercloud_hpcd_template_version }}.yaml"
   when:
     - inventory_hostname == groups['kube_control_plane'][0]
-    - HPCD_MODE == "multi"
+    - hypercloud_hpcd_mode == "multi"

@@ -1,0 +1,152 @@
+
+PLAY [localhost] ***************************************************************
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.017)       0:00:00.017 ******** 
+
+TASK [Check 2.9.0 <= Ansible version < 2.11.0] *********************************
+ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.020)       0:00:00.038 ******** 
+
+TASK [Check Ansible version > 2.10.11 when using ansible 2.10] *****************
+ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.018)       0:00:00.057 ******** 
+
+TASK [Check that python netaddr is installed] **********************************
+ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.028)       0:00:00.086 ******** 
+
+TASK [Check that jinja is not too old (install via pip)] ***********************
+ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+PLAY [Add kube-master nodes to kube_control_plane] *****************************
+skipping: no hosts matched
+
+PLAY [Add kube-node nodes to kube_node] ****************************************
+skipping: no hosts matched
+
+PLAY [Add k8s-cluster nodes to k8s_cluster] ************************************
+skipping: no hosts matched
+
+PLAY [Add calico-rr nodes to calico_rr] ****************************************
+skipping: no hosts matched
+
+PLAY [Add no-floating nodes to no_floating] ************************************
+skipping: no hosts matched
+
+PLAY [bastion[0]] **************************************************************
+skipping: no hosts matched
+
+PLAY [k8s_cluster] *************************************************************
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.059)       0:00:00.145 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.040)       0:00:00.186 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.041)       0:00:00.227 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.073)       0:00:00.300 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.041)       0:00:00.342 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.044)       0:00:00.387 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.028)       0:00:00.416 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.026)       0:00:00.442 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.040)       0:00:00.483 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.041)       0:00:00.525 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.043)       0:00:00.569 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.044)       0:00:00.613 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.026)       0:00:00.640 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.042)       0:00:00.683 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.042)       0:00:00.725 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.042)       0:00:00.767 ******** 
+Tuesday 10 August 2021  12:49:22 +0900 (0:00:00.042)       0:00:00.809 ******** 
+Tuesday 10 August 2021  12:49:23 +0900 (0:00:00.905)       0:00:01.715 ******** 
+
+TASK [kubespray-defaults : Configure defaults] *********************************
+ok: [master] => {
+    "msg": "Check roles/kubespray-defaults/defaults/main.yml"
+}
+ok: [worker] => {
+    "msg": "Check roles/kubespray-defaults/defaults/main.yml"
+}
+Tuesday 10 August 2021  12:49:23 +0900 (0:00:00.089)       0:00:01.804 ******** 
+Tuesday 10 August 2021  12:49:23 +0900 (0:00:00.100)       0:00:01.904 ******** 
+
+TASK [kubespray-defaults : create fallback_ips_base] ***************************
+ok: [master]
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.058)       0:00:01.963 ******** 
+
+TASK [kubespray-defaults : set fallback_ips] ***********************************
+ok: [master]
+ok: [worker]
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.056)       0:00:02.020 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.028)       0:00:02.048 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.043)       0:00:02.092 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.042)       0:00:02.135 ******** 
+
+PLAY [k8s_cluster:etcd] ********************************************************
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.091)       0:00:02.227 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.042)       0:00:02.269 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.045)       0:00:02.315 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.041)       0:00:02.357 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.041)       0:00:02.399 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.044)       0:00:02.444 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.029)       0:00:02.473 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.025)       0:00:02.499 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.042)       0:00:02.541 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.043)       0:00:02.584 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.085)       0:00:02.670 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.046)       0:00:02.716 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.027)       0:00:02.743 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.043)       0:00:02.787 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.041)       0:00:02.829 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.041)       0:00:02.871 ******** 
+Tuesday 10 August 2021  12:49:24 +0900 (0:00:00.043)       0:00:02.914 ******** 
+Tuesday 10 August 2021  12:49:25 +0900 (0:00:00.831)       0:00:03.745 ******** 
+
+TASK [kubespray-defaults : Configure defaults] *********************************
+ok: [master] => {
+    "msg": "Check roles/kubespray-defaults/defaults/main.yml"
+}
+ok: [worker] => {
+    "msg": "Check roles/kubespray-defaults/defaults/main.yml"
+}
+Tuesday 10 August 2021  12:49:25 +0900 (0:00:00.048)       0:00:03.793 ******** 
+Tuesday 10 August 2021  12:49:25 +0900 (0:00:00.047)       0:00:03.840 ******** 
+Tuesday 10 August 2021  12:49:25 +0900 (0:00:00.026)       0:00:03.867 ******** 
+Tuesday 10 August 2021  12:49:25 +0900 (0:00:00.044)       0:00:03.911 ******** 
+Tuesday 10 August 2021  12:49:26 +0900 (0:00:00.025)       0:00:03.937 ******** 
+Tuesday 10 August 2021  12:49:26 +0900 (0:00:00.043)       0:00:03.980 ******** 
+
+TASK [bootstrap-os : Fetch /etc/os-release] ************************************
+ok: [master]
+ok: [worker]
+Tuesday 10 August 2021  12:49:26 +0900 (0:00:00.347)       0:00:04.328 ******** 
+included: /root/ansible/kubespray/roles/bootstrap-os/tasks/bootstrap-centos.yml for master, worker
+Tuesday 10 August 2021  12:49:26 +0900 (0:00:00.079)       0:00:04.408 ******** 
+
+TASK [bootstrap-os : Gather host facts to get ansible_distribution_version ansible_distribution_major_version] ***
+ok: [master]
+ok: [worker]
+Tuesday 10 August 2021  12:49:27 +0900 (0:00:00.677)       0:00:05.085 ******** 
+
+TASK [bootstrap-os : Add proxy to yum.conf or dnf.conf if http_proxy is defined] ***
+ok: [worker]
+ok: [master]
+Tuesday 10 August 2021  12:49:27 +0900 (0:00:00.357)       0:00:05.443 ******** 
+Tuesday 10 August 2021  12:49:27 +0900 (0:00:00.043)       0:00:05.487 ******** 
+Tuesday 10 August 2021  12:49:27 +0900 (0:00:00.061)       0:00:05.548 ******** 
+Tuesday 10 August 2021  12:49:27 +0900 (0:00:00.043)       0:00:05.592 ******** 
+Tuesday 10 August 2021  12:49:27 +0900 (0:00:00.066)       0:00:05.659 ******** 
+Tuesday 10 August 2021  12:49:27 +0900 (0:00:00.074)       0:00:05.733 ******** 
+
+TASK [bootstrap-os : Check presence of fastestmirror.conf] *********************
+ok: [master]
+ok: [worker]
+Tuesday 10 August 2021  12:49:28 +0900 (0:00:00.361)       0:00:06.094 ******** 
+Tuesday 10 August 2021  12:49:28 +0900 (0:00:00.039)       0:00:06.134 ******** 

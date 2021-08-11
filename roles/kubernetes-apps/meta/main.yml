@@ -122,13 +122,13 @@ dependencies:
     tags:
       - hyperauth
 
-- role: kubernetes-apps/hypercloud
+  - role: kubernetes-apps/hypercloud
     when:
       - hypercloud_enabled
     tags:
       - hypercloud
 
-- role: kubernetes-apps/cluster_api
+  - role: kubernetes-apps/cluster_api
     when:
       - cluster_api_enabled
     tags:

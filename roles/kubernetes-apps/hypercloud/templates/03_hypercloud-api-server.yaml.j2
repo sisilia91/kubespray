@@ -24,7 +24,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   rules:
-  - host: {{ INGRESS_SVCURL }}
+  - host: hypercloud5-api-server-service.{{ hostvars[groups['kube_node'][0]]['ansible_host'] }}.nip.io
     http:
       paths:
       - path: /audit(/|$)(.*)
@@ -57,27 +57,31 @@ spec:
       serviceAccount: hypercloud5-admin
       containers:
         - name: hypercloud5-api-server
-          image: tmaxcloudck/hypercloud-api-server:b{{ HPCD_API_SERVER_VERSION }}
+{% if not is_this_offline %}
+          image: tmaxcloudck/hypercloud-api-server:b{{ hypercloud_hpcd_api_server_version }}
+{% else %}
+          image: {{ registry_host }}/tmaxcloudck/hypercloud-api-server:b{{ hypercloud_hpcd_api_server_version }}
+{% endif %}
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ
               value: "Asia/Seoul"
             - name: HC_MODE
-              value: {{ HPCD_MODE}} # multi / single 
-            - name: INVITATION_TOKEN_EXPIRED_DATE
-              value: {{ INVITATION_TOKEN_EXPIRED_DATE }} # multi / single 
+              value: {{ hypercloud_hpcd_mode }} # multi / single 
+            - name: INVITATION_TOKEN_EXPIRED_DATE 
+              value: {{ hypercloud_invitation_token_expired_date }} # multi / single 
             - name: GODEBUG
               value: "x509ignoreCN=0"  
             - name: SIDECAR_IMAGE
               value: "fluent/fluent-bit:1.5-debug"
-            - name: KAFKA_GROUP_ID
-              value: {{ KAFKA_GROUP_ID }}
+            - name: hypercloud_kafka_group_id
+              value: {{ hypercloud_kafka_group_id }}
             - name : kafka1_addr
-              value: {{ KAFKA1_ADDR }}
+              value: {{ hypercloud_kafka1_addr }}
             - name : kafka2_addr
-              value: {{ KAFKA2_ADDR }}
+              value: {{ hypercloud_kafka2_addr }}
             - name : kafka3_addr
-              value: {{ KAFKA3_ADDR }}
+              value: {{ hypercloud_kafka3_addr }}
           ports:
           - containerPort: 443
             name: https 

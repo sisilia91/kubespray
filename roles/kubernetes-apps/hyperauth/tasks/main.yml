@@ -119,7 +119,7 @@
 
 - name: Hyperauth | Wait for Hyperauth Pod become available
   uri: 
-    url: http://hyperauth.{{ nginx_ingress_controller_external_ip }}.nip.io/auth/realms/master/protocol/openid-connect/certs
+    url: http://hyperauth.{{ hostvars[groups['kube_node'][0]]['ansible_host'] }}.nip.io/auth/realms/master/protocol/openid-connect/certs
     return_content: yes
   register: hyperauth_status
   retries: 400
@@ -161,7 +161,7 @@
     # export nginx_ip=`kubectl describe pod -n ingress-nginx-system | grep IP | head -n 1 | cut -d ':' -f2 | tr -d ' '`
     cat > "kafka.cnf" <<EOL
     [kafka]
-    subjectAltName = DNS:kafka-1.hyperauth,DNS:kafka-2.hyperauth,DNS:kafka-3.hyperauth,IP:{{ nginx_ingress_controller_external_ip }}
+    subjectAltName = DNS:kafka-1.hyperauth,DNS:kafka-2.hyperauth,DNS:kafka-3.hyperauth,IP:{{ hostvars[groups['kube_control_plane'][0]]['ansible_host'] }}
     EOL
     sudo openssl x509 -req -CA /etc/kubernetes/pki/hypercloud-root-ca.crt -CAkey /etc/kubernetes/pki/hypercloud-root-ca.key -in ca-request-broker -out ca-signed-broker -days 3650 -CAcreateserial -extfile "kafka.cnf" -extensions kafka -sha256
     sudo keytool -keystore kafka.broker.keystore.jks -alias ca-cert -import -file /etc/kubernetes/pki/hypercloud-root-ca.crt -storepass tmax@23 -noprompt
@@ -201,7 +201,7 @@
     sudo chmod +x /usr/local/bin/yq
     sudo cp /etc/kubernetes/manifests/kube-apiserver.yaml .
     # export port=`kubectl describe service hyperauth -n hyperauth | grep 'NodePort' | grep -v 'https' | grep 'http' | cut -d '/' -f1 | cut -d 'p' -f2 | tr -d ' '`
-    yq e '.spec.containers[0].command += "--oidc-issuer-url=https://hyperauth.{{ nginx_ingress_controller_external_ip }}.nip.io/auth/realms/tmax"' -i ./kube-apiserver.yaml
+    yq e '.spec.containers[0].command += "--oidc-issuer-url=https://hyperauth.{{ hostvars[groups['kube_control_plane'][0]]['ansible_host'] }}.nip.io/auth/realms/tmax"' -i ./kube-apiserver.yaml
     yq e '.spec.containers[0].command += "--oidc-client-id=hypercloud5"' -i ./kube-apiserver.yaml
     yq e '.spec.containers[0].command += "--oidc-username-claim=preferred_username"' -i ./kube-apiserver.yaml
     yq e '.spec.containers[0].command += "--oidc-username-prefix=-"' -i ./kube-apiserver.yaml
