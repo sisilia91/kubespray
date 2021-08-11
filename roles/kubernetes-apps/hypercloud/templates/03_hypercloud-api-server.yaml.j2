@@ -24,7 +24,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   rules:
-  - host: hypercloud5-api-server-service.{{ hostvars[groups['kube_node'][0]]['ansible_host'] }}.nip.io
+  - host: hypercloud5-api-server-service.{{ hostvars[groups['kube_control_plane'][0]]['ansible_host'] }}.nip.io
     http:
       paths:
       - path: /audit(/|$)(.*)
@@ -69,13 +69,13 @@ spec:
             - name: HC_MODE
               value: {{ hypercloud_hpcd_mode }} # multi / single 
             - name: INVITATION_TOKEN_EXPIRED_DATE 
-              value: {{ hypercloud_invitation_token_expired_date }} # multi / single 
+              value: "{{ hypercloud_invitation_token_expired_date }}"
             - name: GODEBUG
               value: "x509ignoreCN=0"  
             - name: SIDECAR_IMAGE
               value: "fluent/fluent-bit:1.5-debug"
             - name: hypercloud_kafka_group_id
-              value: {{ hypercloud_kafka_group_id }}
+              value: hypercloud-api-server-master
             - name : kafka1_addr
               value: {{ hypercloud_kafka1_addr }}
             - name : kafka2_addr
