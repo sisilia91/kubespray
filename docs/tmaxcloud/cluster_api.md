@@ -23,7 +23,7 @@ cluster_api_provider_vsphere: "false"
 
 cluster_api_aws_access_key: "AAAAAAAAAAAAAAAAAAAA"
 cluster_api_aws_secret_key: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-cluster_api_aws_region: "region-detail-number"
+cluster_api_aws_region: "us-east-1"
 
 cluster_api_vsphere_username: "user@vsphere.local" 
 cluster_api_vsphere_password: "0000"
