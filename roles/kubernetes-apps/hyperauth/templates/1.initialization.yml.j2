@@ -168,7 +168,7 @@ metadata:
   namespace: hyperauth
 spec:
   rules:
-  - host: hyperauth.{{ nginx_ingress_controller_external_ip }}.nip.io
+  - host: hyperauth.{{ hostvars[groups['kube_control_plane'][0]]['ansible_host'] }}.nip.io
     http:
       paths:
       - backend:
