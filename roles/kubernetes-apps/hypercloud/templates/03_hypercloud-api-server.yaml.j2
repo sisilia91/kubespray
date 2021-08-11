@@ -24,7 +24,8 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   rules:
-  - http:
+  - host: hypercloud5-api-server-service.{{ hostvars[groups['kube_control_plane'][0]]['ansible_host'] }}.nip.io
+    http:
       paths:
       - path: /audit(/|$)(.*)
         backend:
