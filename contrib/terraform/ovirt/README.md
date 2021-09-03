@@ -80,7 +80,6 @@ ansible-playbook -i inventory.ini ../../cluster.yml -b -v
 
 ## Variables
 
-#FIXME
 ### Required
 
 * `machines`: Machines to provision. Key of this object will be used as the name of the machine
