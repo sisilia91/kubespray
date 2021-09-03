@@ -85,20 +85,20 @@ ansible-playbook -i inventory.ini ../../cluster.yml -b -v
 
 * `machines`: Machines to provision. Key of this object will be used as the name of the machine
   * `node_type`: The role of this node *(master|worker)*
-  * `ip`: The IP address with the netmask (CIDR notation)
-* `gateway`: The IP address of the network gateway
-* `ssh_public_keys`: List of public SSH keys to install on all machines
-* `ovirt_datacenter`: The identifier of oVirt data center
-* `ovirt_compute_cluster`: The identifier of oVirt compute cluster
-* `ovirt_datastore`: The identifier of oVirt data store
-* `ovirt_server`: The address of oVirt server
-* `ovirt_hostname`: The IP address of oVirt hostname
+  * `ips`: The IP address with the netmask (CIDR notation)
+* `gateways`: The IP addresses of the network gateway
+* `authorized_ssh_key`: Public SSH key to install on all machines
+* `ovirt_datacenters`: The identifier of oVirt data center
+* `ovirt_clusters`: The identifier of oVirt cluster
+* `ovirt_storagedomains`: The identifier of oVirt storage domain
+* `ovirt_networks`: The identifier of oVirt network
+* `ovirt_hosts`: The identifier of oVirt host
 * `template_name`: The name of a base image (the image has to be uploaded to oVirt beforehand)
 
 ### Optional
 
 * `prefix`: Prefix to use for all resources, required to be unique for all clusters in the same project *(Defaults to `default`)*
-* `dns_primary`: The IP address of primary DNS server *(Defaults to `8.8.4.4`)*
+* `dns_primary`: The IP address of primary DNS server *(Defaults to `8.8.8.8`)*
 * `dns_secondary`:The IP address of secondary DNS server *(Defaults to `8.8.8.8`)*
 
 An example variables file can be found `default.tfvars`
