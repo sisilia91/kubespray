@@ -5,18 +5,18 @@ resource "ovirt_vm" "worker" {
     if machine.node_type == "worker"
   }
 
-	name 				= each.key
-  cores		    = var.worker_cores
-  memory      = var.worker_memory
-	cluster_id 	= var.cluster_id
-	template_id = var.template_id
+  name         = each.key
+  cores        = var.worker_cores
+  memory       = var.worker_memory
+  cluster_id   = var.cluster_id
+  template_id  = var.template_id
 
-	initialization {
-		user_name = var.ansible_user
-		authorized_ssh_key = var.authorized_ssh_key
-		dns_servers	= var.dns_primary
+  initialization {
+    user_name = var.ansible_user
+    authorized_ssh_key = var.authorized_ssh_key
+    dns_servers  = var.dns_primary
 
-		# 1
+    # 1
     nic_configuration {
       label      = "enp1s0"
       boot_proto = "static"
@@ -25,9 +25,8 @@ resource "ovirt_vm" "worker" {
       netmask    = "255.255.255.0"
     }
 
-		# 2
-		nic_configuration {
-			# FIXME
+    # 2
+    nic_configuration {
       label      = "enp1s1"
       boot_proto = "static"
       address    = each.value.ips[1]
@@ -43,17 +42,17 @@ resource "ovirt_vm" "master" {
     name => machine
     if machine.node_type == "master"
   }
-	
-	name 				= each.key
-  cores		    = var.master_cores
+  
+  name         = each.key
+  cores        = var.master_cores
   memory      = var.master_memory
-	cluster_id 	= var.cluster_id
-	template_id = var.template_id
+  cluster_id   = var.cluster_id
+  template_id = var.template_id
 
-	initialization {
-		user_name = var.ansible_user
-		authorized_ssh_key = var.authorized_ssh_key
-		dns_servers	= var.dns_primary
+  initialization {
+    user_name = var.ansible_user
+    authorized_ssh_key = var.authorized_ssh_key
+    dns_servers  = var.dns_primary
     nic_configuration {
       label      = "enp1s0"
       boot_proto = "static"

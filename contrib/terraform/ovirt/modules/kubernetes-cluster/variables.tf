@@ -5,7 +5,7 @@ variable "machines" {
   description = "Cluster machines"
   type = map(object({
     node_type = string
-    ips      	= list(string)
+    ips       = list(string)
   }))
 }
 
