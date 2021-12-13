@@ -25,15 +25,10 @@ data "aws_ami" "distro" {
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+    values = ["CentOS 8.4.2105 x86_64"]
   }
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
+   owners =["125523088429"]
 }
 
 //AWS VPC Variables

@@ -1,0 +1,39 @@
+[all]
+ip-10-250-205-121.eu-west-3.compute.internal ansible_host=10.250.205.121
+ip-10-250-210-121.eu-west-3.compute.internal ansible_host=10.250.210.121
+ip-10-250-197-139.eu-west-3.compute.internal ansible_host=10.250.197.139
+ip-10-250-197-142.eu-west-3.compute.internal ansible_host=10.250.197.142
+ip-10-250-209-220.eu-west-3.compute.internal ansible_host=10.250.209.220
+ip-10-250-196-209.eu-west-3.compute.internal ansible_host=10.250.196.209
+
+bastion ansible_host=15.237.137.224
+bastion ansible_host=15.188.85.34
+
+[bastion]
+bastion ansible_host=15.237.137.224
+bastion ansible_host=15.188.85.34
+
+[kube_control_plane]
+ip-10-250-205-121.eu-west-3.compute.internal
+ip-10-250-210-121.eu-west-3.compute.internal
+ip-10-250-197-139.eu-west-3.compute.internal
+
+
+[kube_node]
+ip-10-250-197-142.eu-west-3.compute.internal
+ip-10-250-209-220.eu-west-3.compute.internal
+ip-10-250-196-209.eu-west-3.compute.internal
+
+
+[etcd]
+
+
+
+[k8s_cluster:children]
+kube_node
+kube_control_plane
+
+
+[k8s_cluster:vars]
+apiserver_loadbalancer_domain_name="kubernetes-elb-subcluster-1567292964.eu-west-3.elb.amazonaws.com"
+

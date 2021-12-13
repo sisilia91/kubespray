@@ -1,13 +1,10 @@
 ---
 ## Directory where etcd data stored
 etcd_data_dir: /var/lib/etcd
-
 ## Experimental kubeadm etcd deployment mode. Available only for new deployment
 etcd_kubeadm_enabled: true
-
 ## Directory where the binaries will be installed
 bin_dir: /usr/local/bin
-
 ## The access_ip variable is used to define how other nodes should access
 ## the node.  This is used in flannel to allow other flannel nodes to see
 ## this node for example.  The access_ip is really useful AWS and Google
@@ -15,13 +12,10 @@ bin_dir: /usr/local/bin
 ## but don't know about that address themselves.
 # access_ip: 1.1.1.1
 
-
 ## External LB example config
-apiserver_loadbalancer_domain_name: "10.0.10.50"
+apiserver_loadbalancer_domain_name: "kubernetes-elb-subcluster-1567292964.eu-west-3.elb.amazonaws.com"
 loadbalancer_apiserver:
-  address: 10.0.10.50
   port: 6443
-
 ## Internal loadbalancers for apiservers
 # loadbalancer_apiserver_localhost: true
 # valid options are "nginx" or "haproxy"
@@ -35,15 +29,13 @@ loadbalancer_apiserver:
 ## Local loadbalancer should use this port
 ## And must be set port 6443
 loadbalancer_apiserver_port: 6443
-
 ## If loadbalancer_apiserver_healthcheck_port variable defined, enables proxy liveness check for nginx.
 loadbalancer_apiserver_healthcheck_port: 8081
-
 ### OTHER OPTIONAL VARIABLES
 
 ## Upstream dns servers
-upstream_dns_servers:
-  - 192.168.1.150
+#upstream_dns_servers:
+#  - 192.168.1.150
 #   - 8.8.4.4
 
 ## There are some changes specific to the cloud providers
@@ -83,7 +75,6 @@ upstream_dns_servers:
 ## pods will restart) when adding or removing workers.  To override this behaviour by only including master nodes in the
 ## no_proxy variable, set below to true:
 no_proxy_exclude_workers: false
-
 ## Certificate Management
 ## This setting determines whether certs are generated via scripts.
 ## Chose 'none' if you provide your own certificates.
